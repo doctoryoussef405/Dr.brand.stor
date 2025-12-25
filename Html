@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سلة الشراء | DR. BRAND</title>
+<style>
+body{background:#0e0e0e;color:#fff;font-family:Arial;padding:20px}
+.item{display:flex;align-items:center;background:#161616;margin-bottom:15px;border-radius:10px;padding:10px}
+.item img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-right:15px}
+.total{font-size:20px;margin-top:20px}
+.btn{margin-top:20px;padding:15px;background:#2cff00;border:none;width:100%;font-size:18px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<h2>🛒 سلة الشراء</h2>
+<div id="cartItems"></div>
+<div class="total" id="totalPrice"></div>
+
+<button class="btn" onclick="checkout()">اطلب عبر واتساب</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cartDiv = document.getElementById("cartItems");
+let total = 0;
+let message = "طلب جديد:%0A";
+
+cart.forEach(item=>{
+  total += Number(item.price);
+  cartDiv.innerHTML += `
+    <div class="item">
+      <img src="${item.img}">
+      <div>
+        <div>${item.name}</div>
+        <div>${item.price} EGP</div>
+      </div>
+    </div>`;
+  message += `- ${item.name} | ${item.price} EGP%0A`;
+});
+
+document.getElementById("totalPrice").innerText =
+"الإجمالي: " + total + " EGP";
+
+function checkout(){
+  let phone = "201100186143"; // رقمك
+  window.open(`https://wa.me/${phone}?text=${message}%0Aالإجمالي: ${total} EGP`);
+}
+</script>
+
+</body>
+</html>
